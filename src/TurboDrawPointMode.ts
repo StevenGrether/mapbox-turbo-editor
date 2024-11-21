@@ -12,7 +12,7 @@ TurboDrawPoint.onSetup = function (opts) {
     const snapLngLat = null;
 
     const state = DrawPoint.onSetup?.call(this, opts);
-    const vertexCollection = getVertexCollection(this, state);
+    const vertexCollection = getVertexCollection(this);
 
     const previewPoint = this.newFeature(
         point(

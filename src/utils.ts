@@ -8,16 +8,17 @@ export function getDrawFeatures(parent: any): Feature[] {
 export function getVertices(features: Feature[]) {
     let vertices: Feature<Point, GeoJsonProperties>[] = [];
     features.forEach((feature) => {
-        const coords = coordAll(feature);
+        let coords = coordAll(feature);
+        coords = coords.filter((coord) => coord.length)
+        if(!coords.length) return
         const points = coords.map((coord) => point(coord));
         vertices = vertices.concat(points);
     });
     return vertices;
 }
 
-export function getVertexCollection(parent: any, state: any) {
-    let features = getDrawFeatures(parent);
-    features = features.filter((feature) => feature.id !== state.point.id);
+export function getVertexCollection(parent: any) {
+    const features = getDrawFeatures(parent);
     const vertices = getVertices(features);
     return featureCollection(vertices);
 }
