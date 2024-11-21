@@ -27,6 +27,8 @@ TurboDirectSelect.onDrag = function (state, e) {
     if (!vertexCollection.features.length) {
         if (this.getFeature('preview-point')) this.deleteFeature('preview-point');
         state.snapLngLat = e.lngLat;
+        state.feature.updateCoordinate(state.selectedCoordPaths[0], state.snapLngLat.lng, state.snapLngLat.lat);
+
         return;
     }
     const { lng, lat } = e.lngLat;
@@ -35,6 +37,7 @@ TurboDirectSelect.onDrag = function (state, e) {
     if (!nearestVertex) {
         if (this.getFeature('preview-point')) this.deleteFeature('preview-point');
         state.snapLngLat = e.lngLat;
+        state.feature.updateCoordinate(state.selectedCoordPaths[0], state.snapLngLat.lng, state.snapLngLat.lat);
         return;
     }
     const nearestCoordinates = nearestVertex.geometry.coordinates;
@@ -44,11 +47,13 @@ TurboDirectSelect.onDrag = function (state, e) {
     if (!this.getFeature('preview-point')) {
         this.addFeature(state.previewPoint);
     }
+
+    state.feature.updateCoordinate(state.selectedCoordPaths[0], state.snapLngLat.lng, state.snapLngLat.lat);
 };
 
 TurboDirectSelect.onMouseUp = function (state, e) {
     if (state.selectedCoordPaths.length !== 1) return;
-    console.log(state.feature.updateCoordinate(state.selectedCoordPaths[0], state.snapLngLat.lng, state.snapLngLat.lat));
+    state.feature.updateCoordinate(state.selectedCoordPaths[0], state.snapLngLat.lng, state.snapLngLat.lat);
     DirectSelect.onMouseUp?.call(this, state, e);
 };
 

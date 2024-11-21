@@ -9,8 +9,8 @@ export function getVertices(features: Feature[]) {
     let vertices: Feature<Point, GeoJsonProperties>[] = [];
     features.forEach((feature) => {
         let coords = coordAll(feature);
-        coords = coords.filter((coord) => coord.length);
-        if (!coords.length) return;
+        coords = coords?.filter((coord) => coord?.length);
+        if (!coords?.length) return;
         const points = coords.map((coord) => point(coord));
         vertices = vertices.concat(points);
     });

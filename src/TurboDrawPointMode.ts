@@ -19,9 +19,10 @@ TurboDrawPoint.onSetup = function (opts) {
     return { vertexCollection, snapThreshold, snapLngLat, previewPoint, ...state };
 };
 
-TurboDrawPoint.onClick = function (state) {
+TurboDrawPoint.onClick = function (state, e) {
     if (!state.snapLngLat) throw new Error('LngLat is not set');
     DrawPoint.onClick?.call(this, state, {
+        ...e,
         lngLat: state.snapLngLat,
     });
 };
