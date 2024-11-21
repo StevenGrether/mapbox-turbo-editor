@@ -18,7 +18,7 @@ const TurboDrawStyles = [
     {
         id: 'preview',
         type: 'circle',
-        filter: ['all', ['==', '$type', 'Point'], ['==', 'user_isTurboShitSolution', true]],
+        filter: ['all', ['==', '$type', 'Point'], ['==', 'id', 'preview-point']],
         layout: {},
         paint: {
             'circle-color': '#ff0000',

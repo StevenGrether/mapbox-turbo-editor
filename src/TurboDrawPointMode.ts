@@ -18,11 +18,9 @@ TurboDrawPoint.onSetup = function (opts) {
         point(
             [0, 0],
             {
-                id: 'preview-point',
                 active: 'false',
                 meta: 'feature',
                 'meta:type': 'Point',
-                isTurboShitSolution: true,
             },
             {
                 id: 'preview-point',
