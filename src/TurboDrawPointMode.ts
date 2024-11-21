@@ -1,5 +1,5 @@
 import MapboxDraw from '@mapbox/mapbox-gl-draw';
-import { getSnappedPoint, getVertexCollection } from './utils';
+import { createPreviewPoint, getSnappedPoint, getVertexCollection } from './utils';
 import { point } from '@turf/turf';
 import { FeatureCollection, Point } from 'geojson';
 import { LngLat } from 'mapbox-gl';
@@ -14,19 +14,7 @@ TurboDrawPoint.onSetup = function (opts) {
     const state = DrawPoint.onSetup?.call(this, opts);
     const vertexCollection = getVertexCollection(this);
 
-    const previewPoint = this.newFeature(
-        point(
-            [0, 0],
-            {
-                active: 'false',
-                meta: 'feature',
-                'meta:type': 'Point',
-            },
-            {
-                id: 'preview-point',
-            }
-        )
-    );
+    const previewPoint = createPreviewPoint(this);
 
     return { vertexCollection, snapThreshold, snapLngLat, previewPoint, ...state };
 };

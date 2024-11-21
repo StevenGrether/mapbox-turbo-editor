@@ -9,8 +9,8 @@ export function getVertices(features: Feature[]) {
     let vertices: Feature<Point, GeoJsonProperties>[] = [];
     features.forEach((feature) => {
         let coords = coordAll(feature);
-        coords = coords.filter((coord) => coord.length)
-        if(!coords.length) return
+        coords = coords.filter((coord) => coord.length);
+        if (!coords.length) return;
         const points = coords.map((coord) => point(coord));
         vertices = vertices.concat(points);
     });
@@ -30,4 +30,19 @@ export function getSnappedPoint(point: Feature<Point>, vertexCollection: Feature
     const snapDistance = distance(point, nearestVertex, { units: 'meters' });
     if (snapDistance >= threshold) return null;
     return nearestVertex;
+}
+
+export function createPreviewPoint(parent: any) {
+    const turfPoint = point(
+        [0, 0],
+        {
+            active: 'false',
+            meta: 'feature',
+            'meta:type': 'Point',
+        },
+        {
+            id: 'preview-point',
+        }
+    );
+    return parent.newFeature(turfPoint);
 }
