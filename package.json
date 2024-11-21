@@ -9,11 +9,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mapbox/mapbox-gl-draw": "^1.4.3",
     "@turf/turf": "^7.1.0",
     "mapbox-gl": "^3.8.0",
     "vue": "^3.3.8"
   },
   "devDependencies": {
+    "@types/mapbox__mapbox-gl-draw": "^1.4.8",
+    "@types/mapbox-gl": "^3.4.1",
     "@vitejs/plugin-vue": "^4.5.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
