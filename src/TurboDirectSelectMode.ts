@@ -23,32 +23,17 @@ TurboDirectSelect.onDrag = function (state, e) {
     DirectSelect.onDrag?.call(this, state, e);
     if (state.selectedCoordPaths.length > 1) return;
 
-    const vertexCollection: FeatureCollection<Point> = state.vertexCollection;
-    if (!vertexCollection.features.length) {
-        if (this.getFeature('preview-point')) this.deleteFeature('preview-point');
-        state.snapLngLat = e.lngLat;
-        state.feature.updateCoordinate(state.selectedCoordPaths[0], state.snapLngLat.lng, state.snapLngLat.lat);
-
-        return;
-    }
     const { lng, lat } = e.lngLat;
     const mousePoint = point([lng, lat]);
-    const nearestVertex = getSnappedPoint(mousePoint, vertexCollection, state.snapThreshold);
-    if (!nearestVertex) {
-        if (this.getFeature('preview-point')) this.deleteFeature('preview-point');
-        state.snapLngLat = e.lngLat;
-        state.feature.updateCoordinate(state.selectedCoordPaths[0], state.snapLngLat.lng, state.snapLngLat.lat);
-        return;
-    }
-    const nearestCoordinates = nearestVertex.geometry.coordinates;
-    state.snapLngLat = new LngLat(nearestCoordinates[0], nearestCoordinates[1]);
+    const snappedVertex = getSnappedPoint(mousePoint, state.vertexCollection, state.snapThreshold);
+    const [snapLng, snapLat] = snappedVertex.geometry.coordinates;
+    state.snapLngLat = new LngLat(snapLng, snapLat);
 
-    state.previewPoint.setCoordinates([state.snapLngLat.lng, state.snapLngLat.lat]);
+    state.feature.updateCoordinate(state.selectedCoordPaths[0], snapLng, snapLat);
+    state.previewPoint.setCoordinates([snapLng, snapLat]);
     if (!this.getFeature('preview-point')) {
         this.addFeature(state.previewPoint);
     }
-
-    state.feature.updateCoordinate(state.selectedCoordPaths[0], state.snapLngLat.lng, state.snapLngLat.lat);
 };
 
 TurboDirectSelect.onMouseUp = function (state, e) {

@@ -24,11 +24,11 @@ export function getVertexCollection(parent: any) {
 }
 
 export function getSnappedPoint(point: Feature<Point>, vertexCollection: FeatureCollection<Point>, threshold: number) {
-    if (!vertexCollection.features.length) return null;
+    if (!vertexCollection.features.length) return point;
     const nearestVertex = nearestPoint(point, vertexCollection);
-    if (!nearestVertex) return null;
+    if (!nearestVertex) return point;
     const snapDistance = distance(point, nearestVertex, { units: 'meters' });
-    if (snapDistance >= threshold) return null;
+    if (snapDistance >= threshold) return point;
     return nearestVertex;
 }
 

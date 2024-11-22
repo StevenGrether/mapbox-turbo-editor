@@ -26,22 +26,11 @@ TurboDrawPoint.onClick = function (state, e) {
 };
 
 TurboDrawPoint.onMouseMove = function (state, e) {
-    const vertexCollection: FeatureCollection<Point> = state.vertexCollection;
-    if (!vertexCollection.features.length) {
-        if (this.getFeature('preview-point')) this.deleteFeature('preview-point');
-        state.snapLngLat = e.lngLat;
-        return;
-    }
     const { lng, lat } = e.lngLat;
     const mousePoint = point([lng, lat]);
-    const nearestVertex = getSnappedPoint(mousePoint, vertexCollection, state.snapThreshold);
-    if (!nearestVertex) {
-        if (this.getFeature('preview-point')) this.deleteFeature('preview-point');
-        state.snapLngLat = e.lngLat;
-        return;
-    }
-    const nearestCoordinates = nearestVertex.geometry.coordinates;
-    state.snapLngLat = new LngLat(nearestCoordinates[0], nearestCoordinates[1]);
+    const nearestVertex = getSnappedPoint(mousePoint, state.vertexCollection, state.snapThreshold);
+    const [snapLng, snapLat] = nearestVertex.geometry.coordinates;
+    state.snapLngLat = new LngLat(snapLng, snapLat);
 
     state.previewPoint.setCoordinates([state.snapLngLat.lng, state.snapLngLat.lat]);
     if (!this.getFeature('preview-point')) {

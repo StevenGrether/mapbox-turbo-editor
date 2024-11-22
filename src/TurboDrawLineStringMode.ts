@@ -26,28 +26,14 @@ TurboDrawLineString.onClick = function (state, e) {
 };
 
 TurboDrawLineString.onMouseMove = function (state, e) {
-    const vertexCollection: FeatureCollection<Point> = state.vertexCollection;
+    const { lng, lat } = e.lngLat;
+    const mousePoint = point([lng, lat]);
+    const nearestVertex = getSnappedPoint(mousePoint, state.vertexCollection, state.snapThreshold);
+    const [snapLng, snapLat] = nearestVertex.geometry.coordinates;
+    state.snapLngLat = new LngLat(snapLng, snapLat);
 
-    if (!vertexCollection.features.length) {
-        if (this.getFeature('preview-point')) this.deleteFeature('preview-point');
-        state.snapLngLat = e.lngLat;
-        state.line.updateCoordinate(state.currentVertexPosition, state.snapLngLat.lng, state.snapLngLat.lat);
-        return;
-    }
-    const mousePoint = point([e.lngLat.lng, e.lngLat.lat]);
-    const nearestVertex = getSnappedPoint(mousePoint, vertexCollection, state.snapThreshold);
-
-    if (!nearestVertex) {
-        if (this.getFeature('preview-point')) this.deleteFeature('preview-point');
-        state.snapLngLat = e.lngLat;
-        state.line.updateCoordinate(state.currentVertexPosition, state.snapLngLat.lng, state.snapLngLat.lat);
-        return;
-    }
-    const [lng, lat] = nearestVertex.geometry.coordinates;
-    state.snapLngLat = new LngLat(lng, lat);
-
-    state.line.updateCoordinate(state.currentVertexPosition, state.snapLngLat.lng, state.snapLngLat.lat);
-    state.previewPoint.setCoordinates([lng, lat]);
+    state.line.updateCoordinate(state.currentVertexPosition, snapLng, snapLat);
+    state.previewPoint.setCoordinates([snapLng, snapLat]);
     if (!this.getFeature('preview-point')) {
         this.addFeature(state.previewPoint);
     }
