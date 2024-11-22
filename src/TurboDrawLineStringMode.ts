@@ -21,10 +21,8 @@ TurboDrawLineString.onSetup = function (opts) {
 
 TurboDrawLineString.onClick = function (state, e) {
     if (!state.snapLngLat) throw new Error('LngLat is not set');
-    DrawLineString.onClick?.call(this, state, {
-        ...e,
-        lngLat: state.snapLngLat,
-    });
+    e.lngLat = state.snapLngLat;
+    DrawLineString.onClick?.call(this, state, e);
 };
 
 TurboDrawLineString.onMouseMove = function (state, e) {

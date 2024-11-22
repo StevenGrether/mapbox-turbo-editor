@@ -21,10 +21,8 @@ TurboDrawPolygon.onSetup = function (opts) {
 
 TurboDrawPolygon.onClick = function (state, e) {
     if (!state.snapLngLat) throw new Error('LngLat is not set');
-    DrawPolygon.onClick?.call(this, state, {
-        ...e,
-        lngLat: state.snapLngLat,
-    });
+    e.lngLat = state.snapLngLat;
+    DrawPolygon.onClick?.call(this, state, e);
 };
 
 TurboDrawPolygon.onMouseMove = function (state, e) {

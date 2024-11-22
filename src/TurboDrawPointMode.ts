@@ -21,10 +21,8 @@ TurboDrawPoint.onSetup = function (opts) {
 
 TurboDrawPoint.onClick = function (state, e) {
     if (!state.snapLngLat) throw new Error('LngLat is not set');
-    DrawPoint.onClick?.call(this, state, {
-        ...e,
-        lngLat: state.snapLngLat,
-    });
+    e.lngLat = state.snapLngLat;
+    DrawPoint.onClick?.call(this, state, e);
 };
 
 TurboDrawPoint.onMouseMove = function (state, e) {
